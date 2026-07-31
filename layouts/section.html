@@ -1,0 +1,26 @@
+{{ define "main" }}
+  <h1 class="page__title">{{ .Title }}</h1>
+
+  {{ with .Content }}
+    <div class="prose">{{ . }}</div>
+  {{ end }}
+
+  {{ $pages := .RegularPagesRecursive }}
+  {{ $paginator := .Paginate $pages }}
+
+  <ul class="list">
+    {{ range $paginator.Pages }}
+      <li>
+        <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+        <span class="list__date">{{ .Date.Format "January 2, 2006" }}</span>
+      </li>
+    {{ end }}
+  </ul>
+
+  {{ if gt $paginator.TotalPages 1 }}
+    <div class="pager">
+      {{ with $paginator.Prev }}<a href="{{ .URL }}">newer</a>{{ end }}
+      {{ with $paginator.Next }}<a href="{{ .URL }}">older</a>{{ end }}
+    </div>
+  {{ end }}
+{{ end }}

@@ -1,0 +1,10 @@
+# Build output — regenerated on every build, never committed.
+/public/
+
+# Hugo's generated image variants and asset cache.
+/resources/
+/.hugo_cache/
+.hugo_build.lock
+
+# macOS
+.DS_Store

@@ -1,0 +1,28 @@
+{{ define "main" }}
+  <h1 class="page__title">{{ .Title }}</h1>
+
+  {{ with .Content }}
+    <div class="prose">{{ . }}</div>
+  {{ end }}
+
+  <div class="thumbs">
+    {{ range .RegularPagesRecursive }}
+      {{ $p := . }}
+      {{/* Cover = the image named in front matter, else the first one found. */}}
+      {{ $img := "" }}
+      {{ with $p.Params.cover }}
+        {{ $img = $p.Resources.GetMatch . }}
+      {{ end }}
+      {{ if not $img }}
+        {{ $img = $p.Resources.ByType "image" | first 1 }}
+        {{ $img = cond (gt (len $img) 0) (index $img 0) "" }}
+      {{ end }}
+      {{ with $img }}
+        {{ $t := .Resize "400x webp q80" }}
+        <a href="{{ $p.RelPermalink }}" title="{{ $p.Title }}">
+          <img src="{{ $t.RelPermalink }}" alt="{{ $p.Title }}" loading="lazy" decoding="async">
+        </a>
+      {{ end }}
+    {{ end }}
+  </div>
+{{ end }}

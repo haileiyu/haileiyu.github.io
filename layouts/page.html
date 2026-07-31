@@ -1,0 +1,11 @@
+{{ define "main" }}
+  <h1 class="page__title">{{ .Title }}</h1>
+
+  {{ if and (not .Date.IsZero) (ne .Section "") }}
+    <div class="meta">{{ .Date.Format "January 2, 2006" }}</div>
+  {{ end }}
+
+  <div class="prose">
+    {{ .Content }}
+  </div>
+{{ end }}

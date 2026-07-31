@@ -1,0 +1,19 @@
+{{ define "main" }}
+  {{/* Shore's own home page is a single photograph with no text. Since this
+       site is mostly writing, the home page lists recent posts instead —
+       otherwise the main content sits two clicks deep. */}}
+  {{ with .Content }}
+    <div class="prose">{{ . }}</div>
+  {{ end }}
+
+  {{ with site.GetPage "/writing" }}
+    <ul class="list">
+      {{ range first 15 .RegularPagesRecursive }}
+        <li>
+          <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+          <span class="list__date">{{ .Date.Format "2006" }}</span>
+        </li>
+      {{ end }}
+    </ul>
+  {{ end }}
+{{ end }}

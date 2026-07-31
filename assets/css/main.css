@@ -1,0 +1,166 @@
+/* ---------------------------------------------------------------------------
+   Design notes, so future-you knows what is load-bearing:
+
+   The look is borrowed from stephenshore.net. Four things carry it:
+     1. White background, black text, #555 links. No other colour anywhere.
+     2. Helvetica/Arial at one size. Almost nothing is bigger or bolder.
+     3. Images are capped by HEIGHT, not width, so portrait and landscape
+        photographs get equal visual weight on the page.
+     4. Enormous restraint: no borders, shadows, rules, cards, or icons.
+
+   Resist adding things here. The emptiness is the design.
+--------------------------------------------------------------------------- */
+
+html {
+  overflow-y: scroll;              /* no layout shift between short/long pages */
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 5px 20px 60px;
+  background: #fff;
+  color: #000;
+  font-family: Helvetica, "Helvetica Neue", Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+a           { color: #555; text-decoration: none; }
+a:visited   { color: #555; }
+a:hover,
+a:active    { color: #000; }
+
+/* --- nav ----------------------------------------------------------------
+   One left-aligned row: name first, then lowercase section links.
+   Wraps to a second line on narrow screens instead of collapsing into a
+   hamburger — fewer moving parts, and it never hides anything.
+------------------------------------------------------------------------- */
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 18px;
+  margin-bottom: 34px;
+}
+
+.nav__brand {
+  color: #000;
+  font-size: 1.25em;
+  margin-right: 4px;
+}
+
+.nav__brand:visited { color: #000; }
+
+.nav a[aria-current] { color: #000; }
+
+/* --- shared page frame --------------------------------------------------- */
+
+.wrap {
+  max-width: 840px;
+  margin: 0 auto;
+}
+
+h1, h2, h3 {
+  font-size: 1em;
+  font-weight: bold;
+  margin: 2.2em 0 0.6em;
+}
+
+.page__title {
+  margin: 0 0 1.6em;
+}
+
+p, ul, ol { margin: 0 0 1.1em; }
+
+.prose {
+  max-width: 620px;               /* ~75 characters; 840px is too wide to read */
+}
+
+.prose img { max-width: 100%; height: auto; }
+
+.prose blockquote {
+  margin: 1.6em 0;
+  padding-left: 18px;
+  border-left: 1px solid #ddd;
+  color: #555;
+}
+
+.prose code, .prose pre {
+  font-family: Menlo, Consolas, monospace;
+  font-size: 0.85em;
+}
+
+.prose pre {
+  overflow-x: auto;
+  padding: 12px 14px;
+  background: #f7f7f7;
+}
+
+/* --- post lists ---------------------------------------------------------- */
+
+.list        { list-style: none; margin: 0; padding: 0; }
+.list li     { margin-bottom: 0.45em; }
+.list__date  { color: #999; font-size: 0.8em; margin-left: 8px; white-space: nowrap; }
+
+/* --- post meta ----------------------------------------------------------- */
+
+.meta {
+  color: #999;
+  font-size: 0.8em;
+  margin: -1.2em 0 2.4em;
+}
+
+/* --- figures ------------------------------------------------------------- */
+
+.figure {
+  margin: 0 0 34px;
+  text-align: center;
+}
+
+/* The height cap is the whole trick. A tall portrait and a wide landscape
+   end up occupying similar area, which is what makes a mixed set of
+   photographs sit calmly on a page. */
+.figure img {
+  max-width: 100%;
+  max-height: 600px;
+  width: auto;
+  height: auto;
+  margin: 0 auto;
+  display: block;
+}
+
+.figure figcaption {
+  color: #555;
+  font-size: 0.7em;
+  text-align: right;
+  margin-top: 6px;
+}
+
+/* --- photograph index ---------------------------------------------------- */
+
+.thumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.thumbs a { display: block; }
+
+.thumbs img {
+  height: 200px;
+  width: auto;
+  display: block;
+}
+
+/* --- pagination ---------------------------------------------------------- */
+
+.pager { margin-top: 3em; font-size: 0.85em; }
+.pager a { margin-right: 14px; }
+
+@media (max-width: 767px) {
+  .figure img { max-height: 430px; }
+  .thumbs img { height: 140px; }
+  .nav        { gap: 0 14px; }
+}

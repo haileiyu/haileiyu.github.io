@@ -1,0 +1,11 @@
+{{ define "main" }}
+  {{/* Same as the default page layout, minus the narrow .prose column —
+       photographs get the full 840px frame. */}}
+  <h1 class="page__title">{{ .Title }}</h1>
+
+  {{ if not .Date.IsZero }}
+    <div class="meta">{{ .Date.Format "January 2, 2006" }}</div>
+  {{ end }}
+
+  {{ .Content }}
+{{ end }}

@@ -1,0 +1,56 @@
+{{/*
+  Renders a photograph from the current page bundle, resized and converted to
+  WebP at build time. You commit ONE reasonably-sized original; Hugo generates
+  the variants and the browser picks the right one.
+
+  Usage, from inside a page bundle (a folder with index.md next to the image):
+
+    {{< img src="beach.jpg" alt="Two chairs" caption="Montauk, 2026" >}}
+
+  Params:
+    src     required — filename as it sits next to index.md
+    alt     optional — describe the picture; falls back to the caption
+    caption optional — small grey text, right-aligned under the image
+*/}}
+
+{{ $src := .Get "src" }}
+{{ $caption := .Get "caption" }}
+{{ $alt := .Get "alt" | default $caption | default "" }}
+
+{{ with .Page.Resources.GetMatch $src }}
+  {{ $widths := slice 800 1200 1800 }}
+  {{ $srcset := slice }}
+  {{ $orig := . }}
+
+  {{ range $w := $widths }}
+    {{/* Never upscale: a 900px original must not become a fuzzy 1800px. */}}
+    {{ if ge $orig.Width $w }}
+      {{ $r := $orig.Resize (printf "%dx webp q82" $w) }}
+      {{ $srcset = $srcset | append (printf "%s %dw" $r.RelPermalink $w) }}
+    {{ end }}
+  {{ end }}
+
+  {{/* Original smaller than the narrowest step: emit a single WebP copy. */}}
+  {{ if eq (len $srcset) 0 }}
+    {{ $r := $orig.Resize (printf "%dx webp q82" $orig.Width) }}
+    {{ $srcset = $srcset | append (printf "%s %dw" $r.RelPermalink $orig.Width) }}
+  {{ end }}
+
+  {{ $fallbackWidth := int (math.Min $orig.Width 1200) }}
+  {{ $fallback := $orig.Resize (printf "%dx webp q82" $fallbackWidth) }}
+
+  <figure class="figure">
+    <img
+      src="{{ $fallback.RelPermalink }}"
+      srcset="{{ delimit $srcset ", " }}"
+      sizes="(max-width: 880px) 100vw, 840px"
+      width="{{ $orig.Width }}"
+      height="{{ $orig.Height }}"
+      alt="{{ $alt }}"
+      loading="lazy"
+      decoding="async">
+    {{ with $caption }}<figcaption>{{ . }}</figcaption>{{ end }}
+  </figure>
+{{ else }}
+  {{ errorf "img shortcode: no resource named %q in page bundle %q" $src .Page.Path }}
+{{ end }}

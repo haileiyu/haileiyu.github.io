@@ -1,0 +1,33 @@
+# Used by local builds. The deploy workflow overrides it with whatever GitHub
+# Pages reports as the live URL, so adding a custom domain later means:
+#   1. put the bare domain in static/CNAME  (e.g. haileiyu.com)
+#   2. set it under repo Settings > Pages > Custom domain
+#   3. update the line below so local builds match
+baseURL = 'https://haileiyu.github.io/'
+
+locale = 'en-us'
+title = 'Hailei Yu'
+
+# No tags or categories — nothing on the site links to them.
+disableKinds = ['taxonomy', 'term']
+
+[pagination]
+  pagerSize = 25
+
+[markup.goldmark.renderer]
+  unsafe = true
+
+# Nav order, mirroring the flat single-row menu on stephenshore.net.
+[menu]
+  [[menu.main]]
+    name = 'writing'
+    pageRef = '/writing'
+    weight = 10
+  [[menu.main]]
+    name = 'photographs'
+    pageRef = '/photographs'
+    weight = 20
+  [[menu.main]]
+    name = 'information'
+    pageRef = '/information'
+    weight = 30

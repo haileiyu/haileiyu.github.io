@@ -61,7 +61,12 @@ a:active    { color: #000; text-decoration: none; }
   flex-wrap: wrap;
   align-items: center;
   padding: 0.5rem 0;
-  margin: 0 0 20px;
+
+  /* The 20px indent is not decoration — on the original the nav is a
+     <ul class="navbar-nav">, so it inherits the site's generic
+     `ul { margin-left: 20px }`. Bootstrap zeroes the padding but never the
+     margin, so the whole nav sits 20px in from the viewport edge. */
+  margin: 0 0 20px 20px;
 }
 
 .nav__brand {
@@ -196,5 +201,4 @@ ul, ol {
   .grid            { margin: 0; }
   .grid__cell      { width: 100%; margin: 1.5rem 0; }
   .grid__cell img  { height: 200px; }   /* his: thumbs get bigger on mobile */
-  .nav             { padding-left: 0.75rem; }
 }

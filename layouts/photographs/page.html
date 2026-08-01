@@ -1,11 +1,9 @@
+{{ define "width" }}wrap--photo{{ end }}
+
 {{ define "main" }}
-  {{/* Same as the default page layout, minus the narrow .prose column —
-       photographs get the full 840px frame. */}}
-  <h1 class="page__title">{{ .Title }}</h1>
-
-  {{ if not .Date.IsZero }}
-    <div class="meta">{{ .Date.Format "January 2, 2006" }}</div>
-  {{ end }}
-
-  {{ .Content }}
+  {{/* 840px, matching his single-image pages. No heading and no date — the
+       photographs carry the page; captions name them. */}}
+  <div class="lede">
+    {{ .Content }}
+  </div>
 {{ end }}

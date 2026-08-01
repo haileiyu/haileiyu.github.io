@@ -4,11 +4,12 @@
   {{ partial "head.html" . }}
 </head>
 <body>
-  <div class="wrap">
-    {{ partial "nav.html" . }}
-    <main>
-      {{ block "main" . }}{{ end }}
-    </main>
+  {{/* Nav sits outside the content column, flush to the viewport edge —
+       the two are deliberately not aligned. See notes in main.css. */}}
+  {{ partial "nav.html" . }}
+
+  <div class="wrap {{ block "width" . }}wrap--text{{ end }}">
+    {{ block "main" . }}{{ end }}
   </div>
 </body>
 </html>

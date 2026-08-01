@@ -1,11 +1,12 @@
+{{ define "width" }}wrap--text{{ end }}
+
 {{ define "main" }}
-  <h1 class="page__title">{{ .Title }}</h1>
-
-  {{ if and (not .Date.IsZero) (ne .Section "") }}
-    <div class="meta">{{ .Date.Format "January 2, 2006" }}</div>
-  {{ end }}
-
-  <div class="prose">
+  <div class="lede prose">
+    {{/* Posts get a title — there is nothing else on the page to identify one,
+         and it is set at body size per his h2 rule. Standalone pages like
+         Information get none, matching the original, where the nav is the
+         only label a page needs. */}}
+    {{ if .Section }}<h1>{{ .Title }}</h1>{{ end }}
     {{ .Content }}
   </div>
 {{ end }}

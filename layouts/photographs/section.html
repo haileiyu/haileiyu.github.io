@@ -1,28 +1,32 @@
+{{ define "width" }}wrap--grid{{ end }}
+
 {{ define "main" }}
-  <h1 class="page__title">{{ .Title }}</h1>
+  <div class="lede">
+    {{ with .Content }}<div class="prose">{{ . }}</div>{{ end }}
 
-  {{ with .Content }}
-    <div class="prose">{{ . }}</div>
-  {{ end }}
-
-  <div class="thumbs">
-    {{ range .RegularPagesRecursive }}
-      {{ $p := . }}
-      {{/* Cover = the image named in front matter, else the first one found. */}}
-      {{ $img := "" }}
-      {{ with $p.Params.cover }}
-        {{ $img = $p.Resources.GetMatch . }}
+    {{/* Three columns, rows bottom-aligned so thumbnails of different heights
+         share a baseline; the title sits inside the link under the image. */}}
+    <div class="grid">
+      {{ range .RegularPagesRecursive }}
+        {{ $p := . }}
+        {{ $img := "" }}
+        {{ with $p.Params.cover }}
+          {{ $img = $p.Resources.GetMatch . }}
+        {{ end }}
+        {{ if not $img }}
+          {{ $found := $p.Resources.ByType "image" | first 1 }}
+          {{ $img = cond (gt (len $found) 0) (index $found 0) "" }}
+        {{ end }}
+        {{ with $img }}
+          {{ $t := .Resize "600x webp q80" }}
+          <div class="grid__cell">
+            <a href="{{ $p.RelPermalink }}">
+              <img src="{{ $t.RelPermalink }}" alt="{{ $p.Title }}" loading="lazy" decoding="async">
+              {{ $p.Title }}
+            </a>
+          </div>
+        {{ end }}
       {{ end }}
-      {{ if not $img }}
-        {{ $img = $p.Resources.ByType "image" | first 1 }}
-        {{ $img = cond (gt (len $img) 0) (index $img 0) "" }}
-      {{ end }}
-      {{ with $img }}
-        {{ $t := .Resize "400x webp q80" }}
-        <a href="{{ $p.RelPermalink }}" title="{{ $p.Title }}">
-          <img src="{{ $t.RelPermalink }}" alt="{{ $p.Title }}" loading="lazy" decoding="async">
-        </a>
-      {{ end }}
-    {{ end }}
+    </div>
   </div>
 {{ end }}

@@ -1,26 +1,27 @@
+{{ define "width" }}wrap--text{{ end }}
+
 {{ define "main" }}
-  <h1 class="page__title">{{ .Title }}</h1>
+  {{/* No visible heading — the original comments its <h2> out and opens with
+       whitespace. The nav already says which section you are in. */}}
+  <div class="lede">
+    {{ with .Content }}<div class="prose">{{ . }}</div>{{ end }}
 
-  {{ with .Content }}
-    <div class="prose">{{ . }}</div>
-  {{ end }}
+    {{ $paginator := .Paginate .RegularPagesRecursive }}
 
-  {{ $pages := .RegularPagesRecursive }}
-  {{ $paginator := .Paginate $pages }}
+    <ul class="index">
+      {{ range $paginator.Pages }}
+        <li>
+          <a href="{{ .RelPermalink }}"><b><i>{{ .Title }}</i></b>
+            <small>{{ .Date.Format "January 2, 2006" }}</small></a>
+        </li>
+      {{ end }}
+    </ul>
 
-  <ul class="list">
-    {{ range $paginator.Pages }}
-      <li>
-        <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-        <span class="list__date">{{ .Date.Format "January 2, 2006" }}</span>
-      </li>
+    {{ if gt $paginator.TotalPages 1 }}
+      <div class="pager">
+        {{ with $paginator.Prev }}<a href="{{ .URL }}">newer</a>{{ end }}
+        {{ with $paginator.Next }}<a href="{{ .URL }}">older</a>{{ end }}
+      </div>
     {{ end }}
-  </ul>
-
-  {{ if gt $paginator.TotalPages 1 }}
-    <div class="pager">
-      {{ with $paginator.Prev }}<a href="{{ .URL }}">newer</a>{{ end }}
-      {{ with $paginator.Next }}<a href="{{ .URL }}">older</a>{{ end }}
-    </div>
-  {{ end }}
+  </div>
 {{ end }}

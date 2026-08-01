@@ -1,6 +1,8 @@
 <nav class="nav">
   <a class="nav__brand" href="{{ "/" | relURL }}">{{ site.Title }}</a>
-  {{ range site.Menus.main }}
-    <a href="{{ .URL }}"{{ if $.IsMenuCurrent .Menu . }} aria-current="page"{{ else if $.HasMenuCurrent .Menu . }} aria-current="true"{{ end }}>{{ .Name }}</a>
-  {{ end }}
+  {{- range site.Menus.main }}
+  {{/* aria-current is announced by screen readers but deliberately given no
+       styling — the original marks the current page in no visible way. */}}
+  <a class="nav__link" href="{{ .URL }}"{{ if $.IsMenuCurrent .Menu . }} aria-current="page"{{ else if $.HasMenuCurrent .Menu . }} aria-current="true"{{ end }}>{{ .Name }}</a>
+  {{- end }}
 </nav>

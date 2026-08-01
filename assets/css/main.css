@@ -1,134 +1,150 @@
 /* ---------------------------------------------------------------------------
-   Design notes, so future-you knows what is load-bearing:
+   A close reproduction of stephenshore.net.
 
-   The look is borrowed from stephenshore.net. Four things carry it:
-     1. White background, black text, #555 links. No other colour anywhere.
-     2. Helvetica/Arial at one size. Almost nothing is bigger or bolder.
-     3. Images are capped by HEIGHT, not width, so portrait and landscape
-        photographs get equal visual weight on the page.
-     4. Enormous restraint: no borders, shadows, rules, cards, or icons.
+   That site is Bootstrap 5.3.2 plus ~90 lines of its own CSS, so most of what
+   you see is Bootstrap's defaults showing through. The values below are those
+   defaults, extracted and hardcoded — importing 230KB of Bootstrap to use six
+   of its numbers would be silly.
 
-   Resist adding things here. The emptiness is the design.
+   Rules of the house, all of them observed from the original:
+     - Three colours exist: #212529 (body), #000 (headings, list text), #555
+       (every link, including the site name). There is no fourth grey.
+     - No borders. No background fills. No shadows. No rounded corners.
+     - Pages have no visible <h1>. Shore's writing page literally comments the
+       heading out and opens with three <br>. The blank space is the design.
+     - The nav sits flush against the left edge of the viewport while the
+       content column is centred. They are not aligned to each other.
+     - Content width varies per page: 740 / 840 / 900. Not one shared width.
+
+   Before adding anything here, check whether the original has it. It probably
+   doesn't.
 --------------------------------------------------------------------------- */
 
 html {
-  overflow-y: scroll;              /* no layout shift between short/long pages */
+  overflow-y: scroll;               /* his: stops centred content shifting */
   -webkit-text-size-adjust: 100%;
+  background: #fff;
 }
 
 body {
   margin: 0;
-  padding: 5px 20px 60px;
+  padding: 5px 0 60px;
   background: #fff;
-  color: #000;
-  font-family: Helvetica, "Helvetica Neue", Arial, sans-serif;
-  font-size: 15px;
-  line-height: 1.45;
+
+  /* Bootstrap 5.3.2 --bs-font-sans-serif, verbatim. On a Mac this resolves to
+     SF Pro, not Helvetica — which is why hand-setting Helvetica looks wrong. */
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+               "Noto Sans", "Liberation Sans", Arial, sans-serif;
+  font-size: 1rem;                  /* 16px */
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
 }
 
-a           { color: #555; text-decoration: none; }
-a:visited   { color: #555; }
+/* Every link is #555 and goes black on hover — including the site name, which
+   on the original is a .navbar-brand out-specified by its own `a:link` rule. */
+a,
+a:link,
+a:visited   { color: #555; text-decoration: none; }
 a:hover,
-a:active    { color: #000; }
+a:active    { color: #000; text-decoration: none; }
 
-/* --- nav ----------------------------------------------------------------
-   One left-aligned row: name first, then lowercase section links.
-   Wraps to a second line on narrow screens instead of collapsing into a
-   hamburger — fewer moving parts, and it never hides anything.
-------------------------------------------------------------------------- */
+/* --- nav -----------------------------------------------------------------
+   Flush left at the viewport edge, not aligned with the centred content.
+   Bootstrap: .navbar padding .5rem 0; .navbar-brand 1.25rem with 1rem
+   margin-end; .navbar-expand-sm .nav-link padding-x .5rem. Shore adds
+   --bs-nav-link-padding-y: .1rem and a 20px bottom margin.
+-------------------------------------------------------------------------- */
 
 .nav {
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0 18px;
-  margin-bottom: 34px;
+  align-items: center;
+  padding: 0.5rem 0;
+  margin: 0 0 20px;
 }
 
 .nav__brand {
-  color: #000;
-  font-size: 1.25em;
-  margin-right: 4px;
+  font-size: 1.25rem;
+  padding: 0.3125rem 0;
+  margin-right: 1rem;
+  white-space: nowrap;
 }
 
-.nav__brand:visited { color: #000; }
+.nav__link {
+  padding: 0.1rem 0.5rem;
+}
 
-.nav a[aria-current] { color: #000; }
-
-/* --- shared page frame --------------------------------------------------- */
+/* --- content columns ------------------------------------------------------
+   Shore sets max-width inline per page: writing 740, home 840, photographs
+   900. Same idea, as modifier classes.
+-------------------------------------------------------------------------- */
 
 .wrap {
-  max-width: 840px;
+  width: 100%;
   margin: 0 auto;
+  padding: 0.5rem 0.75rem;          /* his .p-2 + container gutter */
+  box-sizing: border-box;
 }
+
+.wrap--text  { max-width: 740px; }
+.wrap--photo { max-width: 840px; }
+.wrap--grid  { max-width: 900px; }
+
+/* Pages open with vertical space where a heading would be. This is his
+   `<br /><br /><br />`, expressed as a margin. */
+.lede { margin-top: 3.5rem; }
+
+/* --- prose ---------------------------------------------------------------- */
+
+p  { margin: 0 0 1.1em; }
 
 h1, h2, h3 {
-  font-size: 1em;
+  font-size: 1em;                   /* his h2 rule: no size jump at all */
   font-weight: bold;
+  color: #000;
   margin: 2.2em 0 0.6em;
-}
-
-.page__title {
-  margin: 0 0 1.6em;
-}
-
-p, ul, ol { margin: 0 0 1.1em; }
-
-.prose {
-  max-width: 620px;               /* ~75 characters; 840px is too wide to read */
 }
 
 .prose img { max-width: 100%; height: auto; }
 
-.prose blockquote {
-  margin: 1.6em 0;
-  padding-left: 18px;
-  border-left: 1px solid #ddd;
-  color: #555;
+/* --- lists ---------------------------------------------------------------
+   Copied exactly. The 1.1em leading on lists against 1.5 body leading is one
+   of the more distinctive things about the original.
+-------------------------------------------------------------------------- */
+
+ul, ol {
+  list-style: none;
+  color: #000;
+  margin-left: 20px;
+  padding-left: 0;
+  font-size: 1em;
+  line-height: 1.1em;
 }
 
-.prose code, .prose pre {
-  font-family: Menlo, Consolas, monospace;
-  font-size: 0.85em;
-}
+.index li { margin-bottom: 0.55em; }
 
-.prose pre {
-  overflow-x: auto;
-  padding: 12px 14px;
-  background: #f7f7f7;
-}
+/* Titles are bold italic; anything trailing (a date, a format note) is
+   <small>, exactly as he marks up "(PDF)". */
+.index small { font-size: 0.8em; }
 
-/* --- post lists ---------------------------------------------------------- */
-
-.list        { list-style: none; margin: 0; padding: 0; }
-.list li     { margin-bottom: 0.45em; }
-.list__date  { color: #999; font-size: 0.8em; margin-left: 8px; white-space: nowrap; }
-
-/* --- post meta ----------------------------------------------------------- */
-
-.meta {
-  color: #999;
-  font-size: 0.8em;
-  margin: -1.2em 0 2.4em;
-}
-
-/* --- figures ------------------------------------------------------------- */
+/* --- figures -------------------------------------------------------------
+   Height-capped, not width-capped, so portrait and landscape photographs
+   carry equal weight. Caption small, grey, right-aligned beneath.
+-------------------------------------------------------------------------- */
 
 .figure {
   margin: 0 0 34px;
   text-align: center;
 }
 
-/* The height cap is the whole trick. A tall portrait and a wide landscape
-   end up occupying similar area, which is what makes a mixed set of
-   photographs sit calmly on a page. */
 .figure img {
+  display: block;
   max-width: 100%;
   max-height: 600px;
   width: auto;
   height: auto;
   margin: 0 auto;
-  display: block;
 }
 
 .figure figcaption {
@@ -138,29 +154,47 @@ p, ul, ol { margin: 0 0 1.1em; }
   margin-top: 6px;
 }
 
-/* --- photograph index ---------------------------------------------------- */
+/* --- photographs index ---------------------------------------------------
+   Three columns; rows bottom-aligned so thumbnails of differing heights sit
+   on a shared baseline; title inside the link, directly under the image.
+-------------------------------------------------------------------------- */
 
-.thumbs {
+.grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  margin: 0 -0.75rem;
 }
 
-.thumbs a { display: block; }
+.grid__cell {
+  flex: 0 0 auto;
+  width: calc(33.333% - 3rem);
+  margin: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;        /* the align-items-end baseline */
+}
 
-.thumbs img {
-  height: 200px;
+.grid__cell img {
+  height: 120px;
   width: auto;
+  max-width: 100%;
   display: block;
+  margin-bottom: 0.35rem;
 }
 
-/* --- pagination ---------------------------------------------------------- */
+/* --- pagination ----------------------------------------------------------- */
 
-.pager { margin-top: 3em; font-size: 0.85em; }
+.pager { margin-top: 3em; }
 .pager a { margin-right: 14px; }
 
+@media (max-width: 991px) {
+  .grid__cell { width: calc(50% - 3rem); }
+}
+
 @media (max-width: 767px) {
-  .figure img { max-height: 430px; }
-  .thumbs img { height: 140px; }
-  .nav        { gap: 0 14px; }
+  .figure img      { max-height: 430px; }
+  .grid            { margin: 0; }
+  .grid__cell      { width: 100%; margin: 1.5rem 0; }
+  .grid__cell img  { height: 200px; }   /* his: thumbs get bigger on mobile */
+  .nav             { padding-left: 0.75rem; }
 }

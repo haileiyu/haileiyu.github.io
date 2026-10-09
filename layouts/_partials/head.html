@@ -1,9 +1,24 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} — {{ site.Title }}{{ end }}</title>
-{{ with .Description | default site.Params.description }}
-  <meta name="description" content="{{ . }}">
+
+{{/* Front matter `description` wins. Otherwise a writing post describes
+     itself with the opening of its text; everything else (home, lists,
+     Information, photograph pages — whose only text is captions) falls back
+     to the site description in hugo.toml. */}}
+{{ $desc := site.Params.description }}
+{{ if .Description }}
+  {{ $desc = .Description }}
+{{ else if and .IsPage (eq .Section "writing") }}
+  {{ with .Summary | plainify | htmlUnescape | replaceRE `\s+` " " | strings.TrimSpace }}
+    {{ $desc = . | truncate 160 }}
+  {{ end }}
 {{ end }}
+{{ with $desc }}<meta name="description" content="{{ . }}">{{ end }}
+
+{{ if ne .Kind "404" }}{{ partial "social.html" (dict "page" . "desc" $desc) }}{{ end }}
+
+<link rel="icon" href="{{ "favicon.svg" | relURL }}" type="image/svg+xml">
 
 {{ with resources.Get "css/main.css" }}
   {{ $opts := dict "minify" (not hugo.IsDevelopment) }}
@@ -18,6 +33,11 @@
   {{ end }}
 {{ end }}
 
-{{ with .OutputFormats.Get "rss" }}
-  <link rel="alternate" type="application/rss+xml" href="{{ .Permalink }}" title="{{ site.Title }}">
+{{/* One feed for the whole site: the writing section's. The home page builds
+     no feed of its own (see [outputs] in hugo.toml), since Hugo's would mix in
+     the Information page and photograph posts. */}}
+{{ with site.GetPage "/writing" }}
+  {{ with .OutputFormats.Get "rss" }}
+    <link rel="alternate" type="application/rss+xml" href="{{ .Permalink }}" title="{{ site.Title }}">
+  {{ end }}
 {{ end }}

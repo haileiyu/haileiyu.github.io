@@ -2,7 +2,7 @@
 title: "Information"
 ---
 
-A sentence or two about yourself goes here.
+<!-- A sentence or two about yourself goes here. -->
 
 [GitHub](https://github.com/haileiyu)
 

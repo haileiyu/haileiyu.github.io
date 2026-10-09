@@ -18,6 +18,10 @@
 
    Before adding anything here, check whether the original has it. It probably
    doesn't.
+
+   Deliberate departures, because Shore's site has no long-form prose to
+   copy: lists, block quotes and code inside a post (.prose) get readable
+   defaults rather than the index-list treatment, and post pages carry a date.
 --------------------------------------------------------------------------- */
 
 html {
@@ -113,12 +117,41 @@ h1, h2, h3 {
 
 .prose img { max-width: 100%; height: auto; }
 
+/* Posts only, below the title. Same size and grey as a caption. */
+.dateline {
+  color: #555;
+  font-size: 0.8em;
+  margin-top: -0.4em;
+}
+
+.prose ul,
+.prose ol { margin: 0 0 1.1em; padding-left: 1.5em; }
+.prose li { margin-bottom: 0.25em; }
+
+/* Indented and in the link grey — no border, no fill, no fourth colour. */
+.prose blockquote {
+  margin: 0 0 1.1em;
+  padding-left: 1.25em;
+  color: #555;
+}
+
+/* Bootstrap's code defaults. overflow-x keeps a long line from widening the
+   whole page on a phone. */
+code { font-size: 0.875em; }
+pre {
+  font-size: 0.875em;
+  margin: 0 0 1.1em;
+  overflow-x: auto;
+}
+pre code { font-size: inherit; }
+
 /* --- lists ---------------------------------------------------------------
    Copied exactly. The 1.1em leading on lists against 1.5 body leading is one
-   of the more distinctive things about the original.
+   of the more distinctive things about the original. Scoped to the index
+   lists only: in a post, a Markdown list needs its bullets and its leading.
 -------------------------------------------------------------------------- */
 
-ul, ol {
+.index {
   list-style: none;
   color: #000;
   margin-left: 20px;

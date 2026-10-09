@@ -11,6 +11,16 @@ title = 'Hailei Yu'
 # No tags or categories — nothing on the site links to them.
 disableKinds = ['taxonomy', 'term']
 
+[params]
+  # Fallback meta/preview description for pages that don't supply their own.
+  description = 'Writing and photographs by Hailei Yu.'
+
+# No home-page feed: Hugo's default one lists every page on the site,
+# Information included. The writing section's feed (/writing/index.xml) is
+# the site's feed instead; head.html links to it from every page.
+[outputs]
+  home = ['html']
+
 [pagination]
   pagerSize = 25
 

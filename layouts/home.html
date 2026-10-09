@@ -17,6 +17,10 @@
           </li>
         {{ end }}
       </ul>
+      {{/* The list stops at 20; past that, the writing page has the rest. */}}
+      {{ if gt (len .RegularPagesRecursive) 20 }}
+        <p><a href="{{ .RelPermalink }}">all writing</a></p>
+      {{ end }}
     {{ end }}
   </div>
 {{ end }}

@@ -1,5 +1,6 @@
 ---
 title: "On Restraint"
+draft: true   # placeholder — remove this line once it holds real content
 date: 2026-07-25
 ---
 

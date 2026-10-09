@@ -6,7 +6,12 @@
          and it is set at body size per his h2 rule. Standalone pages like
          Information get none, matching the original, where the nav is the
          only label a page needs. */}}
-    {{ if .Section }}<h1>{{ .Title }}</h1>{{ end }}
+    {{ if .Section }}
+      <h1>{{ .Title }}</h1>
+      {{ if not .Date.IsZero }}
+        <p class="dateline"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time></p>
+      {{ end }}
+    {{ end }}
     {{ .Content }}
   </div>
 {{ end }}

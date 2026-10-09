@@ -1,0 +1,9 @@
+{{ define "width" }}wrap--text{{ end }}
+
+{{ define "main" }}
+  {{/* GitHub Pages serves /404.html for any missing path. */}}
+  <div class="lede prose">
+    <p>Nothing here.</p>
+    <p><a href="{{ "/" | relURL }}">{{ site.Title }}</a></p>
+  </div>
+{{ end }}

@@ -21,7 +21,9 @@
           {{ $t := .Resize "600x webp q80" }}
           <div class="grid__cell">
             <a href="{{ $p.RelPermalink }}">
-              <img src="{{ $t.RelPermalink }}" alt="{{ $p.Title }}" loading="lazy" decoding="async">
+              {{/* Empty alt: the title right below already names the link,
+                   and a screen reader would otherwise read it twice. */}}
+              <img src="{{ $t.RelPermalink }}" width="{{ $t.Width }}" height="{{ $t.Height }}" alt="" loading="lazy" decoding="async">
               {{ $p.Title }}
             </a>
           </div>
